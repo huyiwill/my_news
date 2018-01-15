@@ -1,0 +1,141 @@
+﻿<include file="./App/Modules/Index/Tpl/news/Index/header.html" />
+        <!-- END header -->
+        <!-- header slider -->
+        <div class="wrapper">
+            <article class="container articles">
+                <div class="row">
+                    <div class="col-sm-4 col-md-3 right_sidebar hidden-xs hidden-sm" data-spy="affix" data-offset-top="112" data-offset-bottom="80">
+                        <div class="news-tabs">
+                            <p class="news-tabs__title h2">新闻时间轴</p>
+                            <ul class="news-tabs__nav nav nav-tabs shadow_text" role="tablist">
+
+                                <foreach name="right_list" item="right_list">
+                                    <if condition="$key eq 0">
+                                        <li role="presentation" class="active">
+                                            <a href="#home" role="tab" data-toggle="tab">
+                                                <span class="time"><{$right_list.title_time}></span>
+                                                <{$right_list.title_desc}>
+                                            </a>
+                                        </li>
+                                     <elseif condition="$key gt 1"/>
+                                        <li role="presentation">
+                                            <a href="#profile" role="tab" data-toggle="tab">
+                                                <span class="time"><{$right_list.title_time}></span>
+                                                <{$right_list.title_desc}>
+                                            </a>
+                                        </li>
+                                    </if>
+                                </foreach>
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12 col-md-9 p0 wrap-headline">
+                        <img src="<{$banner}>" alt="img" class="wrap-headline__img">
+                        <div class="headline clearfix">
+                            <div class="headline__data">
+                                <a href="<{:U('Index/Index/index/',array('n'=>2))}>" class="headline__category headline__category_orange">首页</a>
+                                <p class="headline__category"><{$one_news_time}></p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-9 article_text">
+                        <div class="current">
+                            <h1 class="text-center yel_line current__title"><{$one_news_title}></h1>
+                            <if condition="$content_title neq null">
+                                <p class="current__text"><{$content_title}></p>
+                            </if>
+
+                          <if condition="$one_news_imgs_tags neq null">
+
+
+                             <php>
+
+                              for($i=0;$i<count($one_news_imgs_tags);$i++){
+                                  echo "<img src='".$one_news_imgs_tags[$i]."' alt=\"img\" class=\"current__img\">";
+
+                                 if(isset($news_tag) && !empty($news_tag)){
+                                     echo '<blockquote class="quote current__quote">'.$news_tag[$i].'</blockquote>';
+                                 }
+                              }
+
+                             </php>
+
+
+                          </if>
+
+                            <if condition="$content_main neq null">
+                                <foreach name="content_main" item="new_main">
+                                  <p class="current__text"><{$new_main}></p>
+                                </foreach>
+                            </if>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-9 tags">
+                        <p>Tags:</p>
+                        <ul>
+                            <li>
+                                <a href="#" title="World" class="font">World</a>
+                            </li>
+                            <li>
+                                <a class="yellow font" href="#" title="Sport">Sport</a>
+                            </li>
+                            <li>
+                                <a href="#" title="Cats" class="font">Cats</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--<div class="col-sm-9 col-md-8 col-lg-6 comments">-->
+                        <!--<p class="comments__title">Comments</p>-->
+                        <!--<div class="comments__media">-->
+                            <!--<div class="media-middle">-->
+                                <!--<i class="media-object" style="background-image: url('__IMAGES__/content/comment.png')"></i>-->
+                                <!--<div class="comm_info">-->
+                                    <!--<h4 class="media-heading">Maria</h4>-->
+                                    <!--<span class="time">today, 12:30</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<p class="media-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>-->
+                        <!--</div>-->
+                        <!--<div class="comments__media">-->
+                            <!--<div class="media-middle">-->
+                                <!--<i class="media-object" style="background-image: url('__IMAGES__/content/comment.png')"></i>-->
+                                <!--<div class="comm_info">-->
+                                    <!--<h4 class="media-heading">Maria</h4>-->
+                                    <!--<span class="time">today, 12:30</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<p class="media-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>-->
+                        <!--</div>-->
+                        <!--<div class="comments__media">-->
+                            <!--<div class="media-middle">-->
+                                <!--<i class="media-object" style="background-image: url('__IMAGES__/content/comment.png')"></i>-->
+                                <!--<div class="comm_info">-->
+                                    <!--<h4 class="media-heading">Maria</h4>-->
+                                    <!--<span class="time">today, 12:30</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<p class="media-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>-->
+                        <!--</div>-->
+                        <!--<div class="comments__form">-->
+                            <!--<form action="#" method="POST">-->
+                                <!--<div class="form-group">-->
+                                    <!--<input type="text" style="width: 200px;" class="form-control" placeholder="Your name">-->
+                                <!--</div>-->
+                                <!--<div class="form-group">-->
+                                    <!--<textarea name="text" id="input" class="form-control" rows="7" required="required"></textarea>-->
+                                <!--</div>-->
+                                <!--<button type="submit" class="btn btn-comment">send</button>-->
+                            <!--</form>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </article>
+        </div>
+        <!-- Footer -->
+<include file="./App/Modules/Index/Tpl/news/Index/footer.html" />
+

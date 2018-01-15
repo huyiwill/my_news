@@ -1,0 +1,71 @@
+﻿<include file="./App/Modules/Index/Tpl/news/Index/header.html" />
+        <!-- END header -->
+        <!-- header slider -->
+        <section>
+            <!-- top news -->
+            <div class="wrap wrap_white">
+                <div class="container title">
+                    <h2 class="title__h1 underscore"><{$cate_name}></h2>
+                </div>
+            </div>
+            <div class="wrap wrap_gray pt20">
+                <div class="container">
+                    <div class="row">
+
+
+                    <foreach name="cate_data" item="item">
+                        <div class="col-sm-3">
+                            <div class="thumbnail thumbnail_small">
+                                <if condition="$item.news_img_url neq ''">
+                                    <a href="<{$item.news_content_url}>" class="thumbnail__link">
+                                        <img src="<{$item.news_img_url}>" height="153" width="270" alt="News">
+                                    </a>
+                                </if>
+                                <div class="caption thumbnail__caption">
+                                    <div class="news caption__news">
+                                        <p class="news__category yellow-line"><{$item.news_title}></p>
+                                        <a href="<{$item.news_content_url}>" class="news__link">
+                                            <p class="news__text">
+                                                <php>
+                                                echo mb_substr( $item['news_desc'], 0, 41,'utf-8').'...';
+                                                </php>
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div class="posted">
+                                        <span class="posted__date"><{$item.news_time}></span>
+                                        <ul class="posted__icon">
+                                            <li>
+                                                <span>
+                                                <i class="icon-eye"></i>
+                                                    <php>
+                                                        echo rand(1,10000);
+                                                    </php>
+                                            </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </foreach>
+                    </div>
+
+                </div>
+                <div class="ajax_load">
+                    <i class="icon-arrows-cw"></i>Load more
+                    <svg width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
+                        <rect x='0' y='0' fill='none' width='128' height='40'></rect>
+                    </svg>
+                </div>
+            </div>
+            <!-- /container-->
+        </section>
+        <!-- /top news -->
+        <section class="wrap wrap_gray">
+            <div class="container">
+            </div>
+        </section>
+        <!-- Footer -->
+        <include file="./App/Modules/Index/Tpl/news/Index/footer.html" />
+

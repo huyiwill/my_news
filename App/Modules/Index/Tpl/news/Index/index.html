@@ -1,0 +1,177 @@
+﻿<include file="./App/Modules/Index/Tpl/news/Index/header.html" />
+<!-- END header -->
+<!-- header slider -->
+<div class="slate_gray">
+  <div class="container">
+    <div class="row header_news_panel">
+      <!-- Tab panes -->
+      <div class="col-sm-8 tab-content tab-content_mob-p0">
+
+        <div role="tabpanel" class="tab-pane fade in active" id="home">
+          <img style="width: 680px;height: 450px;" src="<{$one_data.imgs}>" alt="main img" class="tab-pane__img">
+          <div class="header_news_text tab-pane__block">
+            <p class="tab-pane__category yel_line"><{$one_data.twnc}></p>
+
+            <a href="<{:U('Index/Index/index_news_detail/',array('url'=>$one_data['title_href']))}>" class="tab-pane__title"><{$one_data.title}></a>
+            <p class="tab-pane__text"><{$one_data.desc}></p>
+          </div>
+        </div>
+
+        <foreach name="data" item="data">
+          <div role="tabpanel" class="tab-pane fade" id="<{$data.idss}>">
+            <img style="width: 680px;height: 450px;" src="<{$data.imgs}>" alt="main img" class="tab-pane__img">
+            <div class="header_news_text tab-pane__block">
+              <p class="tab-pane__category yel_line"><{$data.twnc}></p>
+              <a href="<{:U('Index/Index/index_news_detail/',array('url'=>$data['title_href']))}>" class="tab-pane__title"><{$data.title}></a>
+              <p class="tab-pane__text"><{$data.desc}></p>
+            </div>
+          </div>
+        </foreach>
+      </div>
+      <!-- END Tab panes -->
+      <!-- Nav tabs -->
+      <div class="col-sm-4 news-tabs">
+        <p class="news-tabs__title h2">图片新闻</p>
+        <ul class="news-tabs__nav nav nav-tabs shadow_text" role="tablist">
+
+          <li role="presentation" class="active">
+            <a href="#home" role="tab" data-toggle="tab">
+              <span class="time"><{$one_data.time}></span>
+              <{$one_data.desc}>
+            </a>
+          </li>
+
+          <foreach name="datas" item="datas">
+            <li role="presentation">
+              <a href="#<{$datas.idss}>" role="tab" data-toggle="tab">
+                <span class="time"><{$datas.time}></span>
+                <{$datas.desc}>
+              </a>
+            </li>
+          </foreach>
+
+          <!--<li role="presentation">-->
+          <!--<a href="#messages" role="tab" data-toggle="tab">-->
+          <!--<span class="time">today, 12:33</span>-->
+          <!--Volkswagen hit by multiple probes in US Volkswagen hit by multiple probes in US-->
+          <!--</a>-->
+          <!--</li>-->
+          <!--<li role="presentation">-->
+          <!--<a href="#settings" role="tab" data-toggle="tab">-->
+          <!--<span class="time">today, 14:44</span>-->
+          <!--Volkswagen hit by multiple probes in US Volkswagen hit by multiple probes in US-->
+          <!--</a>-->
+          <!--</li>-->
+        </ul>
+      </div>
+      <!-- END Nav tabs -->
+    </div>
+  </div>
+</div>
+<!-- END header slider -->
+<!-- top news-->
+<section>
+  <!-- top news -->
+  <!-- title -->
+  <div class="wrap wrap_white">
+    <div class="container title">
+      <h1 class="title__h1 underscore">最新资讯</h1>
+    </div>
+  </div>
+  <!-- END title -->
+  <div class="wrap wrap_gray pt20">
+    <div class="container">
+      <div class="row">
+        <foreach name="popular_news" item="item">
+        <div class="col-sm-3">
+          <div class="thumbnail thumbnail_small">
+            <if condition="$item.news_img_url neq '' ">
+            <a href="<{:U('Index/Catenews/get_news_detail/',array('id'=>$item['id'] , 'url'=>$item['news_content_url']))}>" class="thumbnail__link">
+              <img src="<{$item.news_img_url}>" height="153" width="270" alt="News">
+            </a>
+            </if>
+            <div class="caption thumbnail__caption">
+              <div class="news caption__news">
+                <p class="news__category yellow-line"><{$item.news_cate}></p>
+                <a href="<{:U('Index/Catenews/get_news_detail/',array('id'=>$item['id'] , 'url'=>$item['news_content_url']))}>" class="news__link">
+                  <p class="news__text"><{$item.news_title}></p>
+                </a>
+              </div>
+              <div class="posted">
+                <span class="posted__date"><{$item.news_time}></span>
+                <ul class="posted__icon">
+                  <li>
+                                                <span>
+                                                <i class="icon-eye"></i>
+                                                  <php>
+                                                        echo rand(1,10000);
+                                                  </php>
+                                            </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        </foreach>
+      </div>
+
+
+      <foreach name="every_news_section" item="items">
+        <div class="wrap wrap_white">
+          <div class="container title">
+            <h1 class="title__h1 underscore"><{$items.news_cate}></h1>
+          </div>
+        </div>
+        <div class="row">
+          <foreach name="items.news_cate_data" item="item">
+            <div class="col-sm-3">
+              <div class="thumbnail thumbnail_small">
+                <if condition="$item.news_img_url neq '' ">
+                  <a href="<{:U('Index/Catenews/get_news_detail/',array('id'=>$item['id'] ,'url'=>$item['news_content_url']))}>" class="thumbnail__link">
+                    <img src="<{$item.news_img_url}>" height="153" width="270" alt="News">
+                  </a>
+                </if>
+                <div class="caption thumbnail__caption">
+                  <div class="news caption__news">
+                    <p class="news__category yellow-line"><{$item.news_title}></p>
+                    <a href="<{:U('Index/Catenews/get_news_detail/',array('id'=>$item['id'] , 'url'=>$item['news_content_url']))}>" class="news__link">
+                      <p class="news__text"><{$item.news_title}></p>
+                    </a>
+                  </div>
+                  <div class="posted">
+                    <span class="posted__date"><{$item.news_time}></span>
+                    <ul class="posted__icon">
+                      <li>
+                                                <span>
+                                                <i class="icon-eye"></i>
+                                                  <php>
+                                                        echo rand(1,10000);
+                                                  </php>
+                                            </span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </foreach>
+        </div>
+      </foreach>
+
+
+    </div>
+    <!-- btn load-->
+    <div class="ajax_load">
+      <i class="icon-arrows-cw"></i>Load more
+      <svg width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
+        <rect x='0' y='0' fill='none' width='128' height='40'></rect>
+      </svg>
+    </div>
+    <!-- END btn load-->
+  </div>
+  <!-- /container-->
+</section>
+<!-- /top news -->
+
+<include file="./App/Modules/Index/Tpl/news/Index/footer.html" />
