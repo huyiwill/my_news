@@ -20,13 +20,16 @@ class CatenewsAction extends CommonAction{
     //cate info  wrap wrap_gray pt20
     public function cate_list(){
         $domain = trim($_GET['domain']);
+        $limit  = 20;
         if(!in_array($domain, array_keys($this->cate))){
             $this->redirect("Index/Index/index");
         }
         $cate_name = $this->cate[$domain];
         $m_catenews = new CatenewsModel();
-        $cate_data  = $m_catenews->getCateInfoByName(array('news_cate' => $domain));
-
+        $cate_data  = $m_catenews->getCateInfoByName(array('news_cate' => $domain),$limit);
+        foreach($cate_data as $k => $val){
+            $cate_data[$k]['news_content_url'] = U('Index/Catenews/getCateDetail/',array('id'=>$val['id'],'cate' => $val['news_cate'],'url'=>$val['news_content_url']));
+        }
         $this -> assign('cate_name',$cate_name);
         $this -> assign('cate_data',$cate_data);
         $this->display('Index/cate');
@@ -43,6 +46,17 @@ class CatenewsAction extends CommonAction{
         $this -> assign('main',$news_detail['main']);
         $this -> assign('news_cate_info',$news_detail['news_cate_info']);
         $this -> display('Index/news_detail');
+    }
+
+    //新闻类别入口点击获取详情
+    public function getCateDetail(){
+        $url = trim($_GET['url']);
+        $id = trim($_GET['id']);
+        $new_cate = trim($_GET['cate']);
+        $m_catenews = new CatenewsModel();
+        $news_detail = $m_catenews -> getCateDetailByUrl($new_cate,$id,$url);
+
+
     }
 
     //news.html  页面  右侧新闻列表详情数据

@@ -9,8 +9,8 @@ use \phpspider\core\selector;
 
 class CatenewsModel extends Model{
     //list
-    public function getCateInfoByName($where){
-        $news_cate = M('news_cate')->where($where)->order('id desc')->select();
+    public function getCateInfoByName($where,$limit){
+        $news_cate = M('news_cate')->where($where)->order('id desc')->limit($limit)->select();
         return $news_cate;
     }
 
@@ -86,6 +86,23 @@ class CatenewsModel extends Model{
             'banner'        => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
         );
         return $arr;
+    }
+
+    //抓取类别新闻详情
+    public function getCateDetailByUrl($new_cate,$id,$url){
+        $host           = pathinfo($url);
+        $img_url_       = $host['dirname'];
+        $news_cate_info = M('news_cate')->where(array('id' => $id))->find();
+        switch($new_cate){
+            case 'jrnc':
+                break;
+            case 'ncsp':
+                break;
+            case 'szxw':
+                break;
+            case 'gnxw':
+                break;
+        }
     }
 
     //计算中文长度
