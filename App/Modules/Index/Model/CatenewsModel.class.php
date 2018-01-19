@@ -79,7 +79,6 @@ class CatenewsModel extends Model{
                 }
             }
         }
-
         $arr = array(
             'main'           => $main,
             'news_cate_info' => $news_cate_info,

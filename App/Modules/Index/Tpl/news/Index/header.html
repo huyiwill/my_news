@@ -72,10 +72,18 @@
                             </form>
                         </li>
 
-                        <li class="active">
-                            <span onclick="window.location.href = './'" class="wsmenu-click"></span>
-                            <a href="./">首页</a>
-                        </li>
+                        <if condition="$_SERVER['SERVER_NAME'] != 'www.songtreehy.com'">
+                            <li class="active">
+                                <span onclick="window.location.href = './www'" class="wsmenu-click"></span>
+                                <a href="./www">首页</a>
+                            </li>
+                            <else/>
+                            <li class="active">
+                                <span onclick="window.location.href = './'" class="wsmenu-click"></span>
+                                <a href="./">首页</a>
+                            </li>
+                        </if>
+
 
                         <foreach name="news_list" item="news_list">
                             <li>

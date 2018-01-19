@@ -41,7 +41,6 @@ class CatenewsAction extends CommonAction{
         $id = trim($_GET['id']);
         $m_catenews = new CatenewsModel();
         $news_detail = $m_catenews -> getNewsDetailByUrl($id,$url);
-
         $this -> assign('banner',$news_detail['banner']);
         $this -> assign('main',$news_detail['main']);
         $this -> assign('news_cate_info',$news_detail['news_cate_info']);
@@ -50,6 +49,7 @@ class CatenewsAction extends CommonAction{
 
     //新闻类别入口点击获取详情
     public function getCateDetail(){
+
         $url = trim($_GET['url']);
         $id = trim($_GET['id']);
         $new_cate = trim($_GET['cate']);
