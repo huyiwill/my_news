@@ -56,7 +56,10 @@ class CatenewsAction extends CommonAction{
         $m_catenews = new CatenewsModel();
         $news_detail = $m_catenews -> getCateDetailByUrl($new_cate,$id,$url);
 
-
+        $this -> assign('banner',$news_detail['banner']);
+        $this -> assign('main',$news_detail['main']);
+        $this -> assign('news_cate_info',$news_detail['news_cate_info']);
+        $this -> display('Index/cate_news_detail');
     }
 
     //news.html  页面  右侧新闻列表详情数据

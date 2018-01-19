@@ -49,7 +49,7 @@ $configs = array(
         'host' => '127.0.0.1',
         'port' => 3306,
         'user' => 'root',
-        'pass' => '',
+        'pass' => 'aa',
         'name' => 'easycms',
     ),
     'fields'              => array(
@@ -106,7 +106,11 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                     $news_content_url = trim(strip_tags(selector::select($v,'/<h3><a[^<>]+href *\= *[\\"\']?([^\'\\"]+).*?/i','regex')));
                     if(!empty($news_content_url)){
                         if(substr($news_content_url, 0, 1) == 'h'){
-                            $arr[$k]['news_content_url'] = $news_content_url;
+                            if(!preg_match('/ncnews/i',$news_content_url)){
+                                unset($data[$k]);
+                            }else{
+                                $arr[$k]['news_content_url'] = $news_content_url;
+                            }
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }
@@ -140,7 +144,11 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                     $news_content_url = trim(strip_tags(selector::select($v,'/<h3><a[^<>]+href *\= *[\\"\']?([^\'\\"]+).*?/i','regex')));
                     if(!empty($news_content_url)){
                         if(substr($news_content_url, 0, 1) == 'h'){
-                            $arr[$k]['news_content_url'] = $news_content_url;
+                            if(!preg_match('/ncnews/i',$news_content_url)){
+                                unset($data[$k]);
+                            }else{
+                                $arr[$k]['news_content_url'] = $news_content_url;
+                            }
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }
@@ -175,7 +183,11 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                     $news_content_url = trim(strip_tags(selector::select($v,'/<h3><a[^<>]+href *\= *[\\"\']?([^\'\\"]+).*?/i','regex')));
                     if(!empty($news_content_url)){
                         if(substr($news_content_url, 0, 1) == 'h'){
-                            $arr[$k]['news_content_url'] = $news_content_url;
+                            if(!preg_match('/ncnews/i',$news_content_url)){
+                                unset($data[$k]);
+                            }else{
+                                $arr[$k]['news_content_url'] = $news_content_url;
+                            }
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }
@@ -210,7 +222,11 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                     $news_content_url = trim(strip_tags(selector::select($v,'/<h3><a[^<>]+href *\= *[\\"\']?([^\'\\"]+).*?/i','regex')));
                     if(!empty($news_content_url)){
                         if(substr($news_content_url, 0, 1) == 'h'){
-                            $arr[$k]['news_content_url'] = $news_content_url;
+                            if(!preg_match('/ncnews/i',$news_content_url)){
+                                unset($data[$k]);
+                            }else{
+                                $arr[$k]['news_content_url'] = $news_content_url;
+                            }
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }

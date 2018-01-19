@@ -9,7 +9,7 @@ use \phpspider\core\selector;
 
 class CatenewsModel extends Model{
     //list
-    public function getCateInfoByName($where,$limit){
+    public function getCateInfoByName($where, $limit){
         $news_cate = M('news_cate')->where($where)->order('id desc')->limit($limit)->select();
         return $news_cate;
     }
@@ -63,7 +63,7 @@ class CatenewsModel extends Model{
         $news_cate_info = M('news_cate')->where(array('id' => $id))->find();
         $news_detail    = \phpspider\core\requests::get($url);
         $main           = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//p");
-        $banner = array();
+        $banner         = array();
         if(is_array($main) && !empty($main)){
             foreach($main as $k => $val){
                 $img = selector::select($val, "//img");
@@ -83,24 +83,122 @@ class CatenewsModel extends Model{
         $arr = array(
             'main'           => $main,
             'news_cate_info' => $news_cate_info,
-            'banner'        => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
+            'banner'         => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
         );
         return $arr;
     }
 
     //抓取类别新闻详情
-    public function getCateDetailByUrl($new_cate,$id,$url){
+    public function getCateDetailByUrl($new_cate, $id, $url){
         $host           = pathinfo($url);
         $img_url_       = $host['dirname'];
         $news_cate_info = M('news_cate')->where(array('id' => $id))->find();
+        $news_title     = $news_cate_info['news_title'];
+        $news_time      = $news_cate_info['news_time'];
         switch($new_cate){
             case 'jrnc':
+                $mains  = \phpspider\core\requests::get($url);
+                $main   = selector::select($mains, "//div[contains(@class,'TRS_Editor')]//p");
+                $banner = array();
+                if(is_array($main) && !empty($main)){
+                    foreach($main as $k => $val){
+                        $img = selector::select($val, "//img");
+                        if($img && !empty($img)){
+                            if(substr($img, 0, 1) == 'h'){
+                                $main[$k] = trim($img);
+                            }else{
+                                $main[$k] = $img_url_ . ltrim($img, '.');
+                            }
+                            $banner[] = $main[$k];
+                        }else{
+                            $main[$k] = strip_tags(trim($val));
+                        }
+                    }
+                }
+                $arr = array(
+                    'main'           => $main,
+                    'news_cate_info' => $news_cate_info,
+                    'banner'         => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
+                );
+                return $arr;
                 break;
             case 'ncsp':
+                $mains  = \phpspider\core\requests::get($url);
+                $main   = selector::select($mains, "//div[contains(@class,'TRS_Editor')]//p");
+                $banner = array();
+                if(is_array($main) && !empty($main)){
+                    foreach($main as $k => $val){
+                        $img = selector::select($val, "//img");
+                        if($img && !empty($img)){
+                            if(substr($img, 0, 1) == 'h'){
+                                $main[$k] = trim($img);
+                            }else{
+                                $main[$k] = $img_url_ . ltrim($img, '.');
+                            }
+                            $banner[] = $main[$k];
+                        }else{
+                            $main[$k] = strip_tags(trim($val));
+                        }
+                    }
+                }
+                $arr = array(
+                    'main'           => $main,
+                    'news_cate_info' => $news_cate_info,
+                    'banner'         => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
+                );
+                return $arr;
                 break;
             case 'szxw':
+                $mains  = \phpspider\core\requests::get($url);
+                $main   = selector::select($mains, "//div[contains(@class,'TRS_Editor')]//p");
+                $banner = array();
+                if(is_array($main) && !empty($main)){
+                    foreach($main as $k => $val){
+                        $img = selector::select($val, "//img");
+                        if($img && !empty($img)){
+                            if(substr($img, 0, 1) == 'h'){
+                                $main[$k] = trim($img);
+                            }else{
+                                $main[$k] = $img_url_ . ltrim($img, '.');
+                            }
+                            $banner[] = $main[$k];
+                        }else{
+                            $main[$k] = strip_tags(trim($val));
+                        }
+                    }
+                }
+                $arr = array(
+                    'main'           => $main,
+                    'news_cate_info' => $news_cate_info,
+                    'banner'         => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
+                );
+                return $arr;
                 break;
             case 'gnxw':
+                $mains  = \phpspider\core\requests::get($url);
+                $main   = selector::select($mains, "//div[contains(@class,'TRS_Editor')]//p");
+                $banner = array();
+                if(is_array($main) && !empty($main)){
+                    foreach($main as $k => $val){
+                        $img = selector::select($val, "//img");
+                        if($img && !empty($img)){
+                            if(substr($img, 0, 1) == 'h'){
+                                $main[$k] = trim($img);
+                            }else{
+                                $main[$k] = $img_url_ . ltrim($img, '.');
+                            }
+                            $banner[] = $main[$k];
+                        }else{
+                            $main[$k] = strip_tags(trim($val));
+                        }
+                    }
+                }
+                $arr = array(
+                    'main'           => $main,
+                    'news_cate_info' => $news_cate_info,
+                    'banner'         => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
+                );
+                return $arr;
                 break;
         }
     }
