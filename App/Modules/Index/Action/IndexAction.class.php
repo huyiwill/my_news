@@ -20,7 +20,6 @@ class IndexAction extends CommonAction{
         'gnxw',//国内新闻http://www.ncnews.com.cn/xwzx/gnxw/
     );
 
-
     //news index
     public function index(){
         $url        = "http://www.ncnews.com.cn/xwzx/ncxw/bwzg_rd/"; //本网原创
@@ -39,6 +38,15 @@ class IndexAction extends CommonAction{
         $this->assign('data', $res['data']);
         $this->assign('datas', $res['data']);
         $this->display('index');
+    }
+
+    //最新资讯替换成视频s
+    public function getPopularVideo(){
+        $m_catenews = new CatenewsModel();
+        // 新闻  最新资讯s
+        $popular_news = $m_catenews->getCateNewsByRand(2);
+        $this->display('video1');
+        //$this->display('video');
     }
 
     //cate  nav cate_list
@@ -122,12 +130,8 @@ class IndexAction extends CommonAction{
         $this->display('404');
     }
 
-    //江西都市
+    //江西南昌青山湖宣传视频
     public function jx(){
-        $url = "http://www.jxntv.cn/live/jxtv2.shtml";
-        //$main = requests::get($url);
-        //$main = file_get_contents($url);
-        //pr($main);
         $this->display('jiangxi');
     }
 

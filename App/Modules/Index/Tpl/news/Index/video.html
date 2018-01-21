@@ -1,0 +1,54 @@
+﻿<include file="./App/Modules/Index/Tpl/news/Index/header.html"/>
+<!-- END header -->
+<!-- Content-->
+<div class="wrap-error" style="margin-bottom: 80%;text-align:center;">
+  <div class="error clearfix" style="">
+    <div class="error__left">
+      <p>江西南昌市青山湖区欢迎你s!</p>
+      <p style="margin-bottom: 30%">
+        <!--<iframe scrolling="no" frameborder="0" width="100%" height="40%"-->
+        <!--src="http://sp.ncnews.com.cn:8081/masvod/public/2018/01/17/20180117_161002846c5_r31_300k.mp4" allowfullscreen></iframe>-->
+
+      <div id="vodPlayer">
+        <script type="text/javascript"
+                src="http://www.ncnews.com.cn/statics/js/sewise/player/sewise.player.min.js"></script>
+        <script>
+          $(document).ready(function(){
+            SewisePlayer.setup({
+              server       : "vod",
+              type         : "m3u8",
+              skin         : "vodWhite",
+              logo         : "http://www.ncnews.com.cn/statics/images/no.png",
+              copyright    : "南昌新闻网 www.ncnews.com.cn",
+              lang         : "zh_CN",
+              claritybutton: "disable",
+              videourl     : "http://videofile1.nc.cutv.com/originfile/hls/020052_t/2018/01/18/A14/A14egeejgfjfkglilflybh_cug.m3u8",
+              title        : "南昌深入推进“蓝天、清流、净土”行动"
+            });
+          });
+        </script>
+        <div style="position: relative; width: 100%; height: 100%; left: 0px; top: 0px;">
+          <object type="application/x-shockwave-flash" id="sewise_player" name="sewise_player"
+                  data="http://www.ncnews.com.cn/statics/js/sewise/player/flash/SewisePlayer.swf" width="100%"
+                  height="100%">
+            <param name="allowfullscreen" value="true">
+            <param name="wmode" value="transparent">
+            <param name="allowscriptaccess" value="always">
+            <param name="flashvars"
+                   value="autoStart=true&amp;programId=&amp;lang=zh_CN&amp;logo=http://www.ncnews.com.cn/statics/images/no.png&amp;buffer=2&amp;type=m3u8&amp;serverPath=http://www.ncnews.com.cn/flashservice/gateway.php&amp;serverApi=ServerApi.execute&amp;skin=http://www.ncnews.com.cn/statics/js/sewise/player/flash/skins/vodWhite.swf&amp;title=%E5%8D%97%E6%98%8C%E6%B7%B1%E5%85%A5%E6%8E%A8%E8%BF%9B%E2%80%9C%E8%93%9D%E5%A4%A9%E3%80%81%E6%B8%85%E6%B5%81%E3%80%81%E5%87%80%E5%9C%9F%E2%80%9D%E8%A1%8C%E5%8A%A8&amp;draggable=true&amp;published=0&amp;videoUrl=http%3A%2F%2Fvideofile1.nc.cutv.com%2Foriginfile%2Fhls%2F020052_t%2F2018%2F01%2F18%2FA14%2FA14egeejgfjfkglilflybh_cug.m3u8&amp;startTime=0&amp;poster=&amp;flagDatas=&amp;videosJsonUrl=&amp;adsJsonData=&amp;statistics=&amp;customDatas=&amp;playerName=Sewise Player&amp;copyright=%E5%8D%97%E6%98%8C%E6%96%B0%E9%97%BB%E7%BD%91%20www.ncnews.com.cn&amp;playerVersion=Version: 2.5.2&amp;buildDate=Build: 2014.12.26 11:00&amp;clarityButton=disable&amp;timeDisplay=enable&amp;controlBarDisplay=enable&amp;topBarDisplay=enable&amp;customStrings=&amp;volume=0.6&amp;key=">
+          </object>
+        </div>
+      </div>
+
+      </p>
+    </div>
+  </div>
+
+</div>
+<!-- END content-->
+
+<!-- Footer -->
+
+<!-- END Footer -->
+<include file="./App/Modules/Index/Tpl/news/Index/footer.html"/>
+
