@@ -1,7 +1,7 @@
 <?php
 
 if($_SERVER['SERVER_ADDR'] == '120.26.38.109'){
-    $host = $_SERVER['HTTP_HOST'] . '/www/my_news/';
+    $host = $_SERVER['HTTP_HOST'] . '/www/news';
 }else{
     $host = $_SERVER['HTTP_HOST'];
 }

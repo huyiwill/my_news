@@ -8,7 +8,7 @@
 class TwncModel extends Model{
     //list
     public function twnc_list($limit=1000){
-        $twnc_list = M('news_twnc')->limit($limit)->order('id asc')->order('RAND()')->select();
+        $twnc_list = M('news_twnc')->limit($limit)->order('unix_timestamp(title_time) desc')->order('RAND()')->select();
         return $twnc_list;
     }
     //
