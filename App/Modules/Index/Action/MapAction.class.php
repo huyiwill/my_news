@@ -25,10 +25,10 @@ class MapAction extends CommentAction{
         $pos  = new MapModel();
         $res  = $pos->insertPosition($data);
         if(!$res){
-            echo json_encode(array('code' => 0, 'msg' => '亲,请刷新中奖,后续服务请联系MrHu'));
+            echo json_encode(array('code' => 0, 'msg' => '亲,请刷新,后续服务请联系MrHu'));
             exit;
         }
-        echo json_encode(array('code' => 1, 'msg' => '恭喜,你的位置已被卫星定位,后续服务请联系MrHu'));
+        echo json_encode(array('code' => 1, 'msg' => '你的位置已被卫星跟着,后续服务请联系MrHu'));
         exit;
     }
 

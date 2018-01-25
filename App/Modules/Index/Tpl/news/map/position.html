@@ -11,7 +11,7 @@
   <script src="__JS__/jquery.min.js"></script>
 <body>
 <!--<div id='container'></div>-->
-<div id="tip"></div>
+<div id="tip" style="text-align: center;font-size: 18px;"></div>
 <script type="text/javascript">
   /***************************************
    由于Chrome、IOS10等已不再支持非安全域的浏览器定位请求，为保证定位成功率和精度，请尽快升级您的站点到HTTPS。
@@ -36,7 +36,7 @@
   });
   //解析定位结果
   function onComplete(data) {
-    var str=['定位成功'];
+    var str=[];
     //str.push('经度：' + data.position.getLng());
     //str.push('纬度：' + data.position.getLat());
     if(data.accuracy){
@@ -46,7 +46,7 @@
 
     //var info = JSON.parse(JSON.stringify(data));
     //str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
-    str.push('你的当前位置：' + (data.formattedAddress));
+    str.push('定位位置：' + (data.formattedAddress));
     var lng = data.position.getLng();
     var lat = data.position.getLat();
     var mile = data.accuracy ? data.accuracy : '0';
@@ -60,6 +60,7 @@
           str.push(data.msg);
           if(data.code == 1){
             document.getElementById('tip').innerHTML = str.join('<br/>');
+            alert(str.join("-----"));
           }else{
             document.getElementById('tip').innerHTML = str.join('<br/>');
           }
