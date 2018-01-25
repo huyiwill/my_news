@@ -8,10 +8,17 @@
 class MapModel extends Model{
     //插入位置信息
     public function insertPosition($data){
-        $r = M('map') -> where(array('ip' => $data['ip'] )) -> select();
-        if(count($r) > 1000){
-            $res = M('map1')->add($data);
-            return $res;
+        $lng = $data['lng'];
+        $lat = $data['lat'];
+        $where = array(
+            'lng' => $lng,
+            'lat' => $lat,
+            'ip'  => $data['ip']
+        );
+        $r = M('map') -> where($where) -> select();
+        if(count($r) > 50){
+            //$res = M('map1')->add($data);
+            return true;
         }
         $res = M('map')->add($data);
         return $res;
