@@ -31,5 +31,4 @@ class MapAction extends CommentAction{
         echo json_encode(array('code' => 1, 'msg' => '【你的位置已被卫星跟着,后续服务请联系MrHu】'));
         exit;
     }
-
 }
