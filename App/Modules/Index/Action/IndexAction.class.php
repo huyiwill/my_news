@@ -45,7 +45,7 @@ class IndexAction extends CommonAction{
         $m_catenews = new CatenewsModel();
         // 新闻  最新资讯s
         $popular_news = $m_catenews->getCateNewsByRand(2);
-        $this->display('video3');//央视的百家讲团
+        $this->display('video1');
         //$this->display('video');
     }
 

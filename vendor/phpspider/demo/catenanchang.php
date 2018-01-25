@@ -109,7 +109,11 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                             if(!preg_match('/ncnews/i',$news_content_url)){
                                 continue;
                             }
+<<<<<<< HEAD
                             $arr[$k]['news_content_url'] = $news_content_url;
+=======
+                                $arr[$k]['news_content_url'] = $news_content_url;
+>>>>>>> 3c7ffc1129f0dccb0e4dd301ddd3bbc1164fdd74
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }
@@ -146,7 +150,11 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                             if(!preg_match('/ncnews/i',$news_content_url)){
                                 continue;
                             }
+<<<<<<< HEAD
                             $arr[$k]['news_content_url'] = $news_content_url;
+=======
+                                $arr[$k]['news_content_url'] = $news_content_url;
+>>>>>>> 3c7ffc1129f0dccb0e4dd301ddd3bbc1164fdd74
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }
@@ -184,7 +192,11 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                             if(!preg_match('/ncnews/i',$news_content_url)){
                                 continue;
                             }
+<<<<<<< HEAD
                             $arr[$k]['news_content_url'] = $news_content_url;
+=======
+                                $arr[$k]['news_content_url'] = $news_content_url;
+>>>>>>> 3c7ffc1129f0dccb0e4dd301ddd3bbc1164fdd74
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }
@@ -222,7 +234,11 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                             if(!preg_match('/ncnews/i',$news_content_url)){
                                 continue;
                             }
+<<<<<<< HEAD
                             $arr[$k]['news_content_url'] = $news_content_url;
+=======
+                                $arr[$k]['news_content_url'] = $news_content_url;
+>>>>>>> 3c7ffc1129f0dccb0e4dd301ddd3bbc1164fdd74
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }
