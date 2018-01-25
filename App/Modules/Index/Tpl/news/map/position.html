@@ -39,14 +39,14 @@
     var str=[];
     //str.push('经度：' + data.position.getLng());
     //str.push('纬度：' + data.position.getLat());
-    if(data.accuracy){
-      str.push('精度：' + data.accuracy + ' 米');
-    }
+//    if(data.accuracy){
+//      str.push('精度：' + data.accuracy + ' 米');
+//    }
     //如为IP精确定位结果则没有精度信息
 
     //var info = JSON.parse(JSON.stringify(data));
     //str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
-    str.push('定位位置：' + (data.formattedAddress));
+    str.push('【跟踪位置】：' + (data.formattedAddress)+'。');
     var lng = data.position.getLng();
     var lat = data.position.getLat();
     var mile = data.accuracy ? data.accuracy : '0';
@@ -60,7 +60,7 @@
           str.push(data.msg);
           if(data.code == 1){
             document.getElementById('tip').innerHTML = str.join('<br/>');
-            alert(str.join("-----"));
+            alert(str.join("\r\n"));
           }else{
             document.getElementById('tip').innerHTML = str.join('<br/>');
           }
