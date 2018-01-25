@@ -2,6 +2,7 @@
 <html lang="zxx">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -9,6 +10,11 @@
     <meta name="HandheldFriendly" content="true">
     <meta content="telephone=no" name="format-detection">
     <!-- favicon -->
+    <script src="__JS__/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.3&key=e8496e8ac4b0f01100b98da5bde96597"></script>
+    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+
     <link rel="shortcut icon" type="image/png" href="favicon.png" />
     <!--[if (gt IE 9)|!(IE)]><!-->
     <!-- custom CSS -->
@@ -139,6 +145,7 @@
                                                         <iframe width="130" scrolling="no" height="120" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=4&color=%23&bdc=%23&icon=1&py=nanchang&wind=1&num=1&site=12"></iframe>
                                                     </li>
                                                 </ul>
+                                            <input type="hidden" id="tip" />
 
                                         </div>
                                     </div>
@@ -160,3 +167,68 @@
         </div>
     </div>
 </header>
+<script type="text/javascript">
+    /***************************************
+     由于Chrome、IOS10等已不再支持非安全域的浏览器定位请求，为保证定位成功率和精度，请尽快升级您的站点到HTTPS。
+     ***************************************/
+    var map, geolocation;
+    //加载地图，调用浏览器定位服务
+    map = new AMap.Map('container', {
+        resizeEnable: true
+    });
+    map.plugin('AMap.Geolocation', function() {
+        geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            buttonPosition:'RB'
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition();
+        AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+        AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+    });
+    //解析定位结果
+    function onComplete(data) {
+//        var str=['定位成功'];
+        var str=[];
+        //str.push('经度：' + data.position.getLng());
+        //str.push('纬度：' + data.position.getLat());
+        // if(data.accuracy){
+        //   str.push('精度：' + data.accuracy + ' 米');
+        // }
+        //如为IP精确定位结果则没有精度信息
+
+        //var info = JSON.parse(JSON.stringify(data));
+        //str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+        str.push('当前位置：' + (data.formattedAddress));
+        var lng = data.position.getLng();
+        var lat = data.position.getLat();
+        var mile = data.accuracy ? data.accuracy : '0';
+        var pos = data.formattedAddress ? data.formattedAddress : '位置未知';
+        $.ajax({
+            type : 'post',
+            url  : "http://www.songtreehy.com/www/news/index.php?g=index&m=map&a=recordPeoplePosition",
+            data : {pos : pos,lng : lng, lat : lat,mile:mile},
+            dataType : "json",
+            success : function(data){
+                //str.push(data.msg);
+                if(data.code == 1){
+                    document.getElementById('tip').innerHTML = str;
+                }else{
+                    document.getElementById('tip').innerHTML = str;
+                }
+            },
+            error : function(data){
+                document.getElementById('tip').innerHTML = '亲,网络错误,请刷新!';
+            }
+        });
+        //document.getElementById('tip').innerHTML = str.join('<br>');
+    }
+    //解析定位错误信息
+    function onError(data) {
+        document.getElementById('tip').innerHTML = '定位失败';
+    }
+
+</script>
