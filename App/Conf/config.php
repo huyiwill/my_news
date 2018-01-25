@@ -25,10 +25,10 @@ $b = array(
 
     /* 数据库配置 */
     'DB_TYPE'              => 'mysql', // 数据库类型
-    'DB_HOST'              => '127.0.0.1', // 服务器地址
-    'DB_NAME'              => 'easycms', // 数据库名
-    'DB_USER'              => 'root', // 用户名
-    'DB_PWD'               => 'aa',  // 密码
+    'DB_HOST'              => 'hdm144528485.my3w.com', // 服务器地址
+    'DB_NAME'              => 'hdm144528485_db', // 数据库名
+    'DB_USER'              => 'hdm144528485', // 用户名
+    'DB_PWD'               => 'huyiwill',  // 密码
     'DB_PORT'              => '3306', // 端口
     'DB_PREFIX'            => 'easy_', // 数据库表前缀
 

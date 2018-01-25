@@ -10,16 +10,16 @@ use \phpspider\core\selector;
 class CatenewsModel extends Model{
     //list
     public function getCateInfoByName($where, $limit){
-        $news_cate = M('news_cate')->where($where)->order('id desc')->limit($limit)->select();
+        $news_cate = M('news_cate')->where($where)->order('unix_timestamp(news_time) desc')->limit($limit)->select();
         return $news_cate;
     }
 
     //随机抽取各个新闻
     public function getCateNewsByRand($limit){
-        $news1 = M('news_cate')->where(array('news_cate' => 'jrnc'))->order('id desc')->order('rand()')->limit($limit)->select();
-        $news2 = M('news_cate')->where(array('news_cate' => 'ncsp'))->order('id desc')->order('rand()')->limit($limit)->select();
-        $news3 = M('news_cate')->where(array('news_cate' => 'szxw'))->order('id desc')->order('rand()')->limit($limit)->select();
-        $news4 = M('news_cate')->where(array('news_cate' => 'gnxw'))->order('id desc')->order('rand()')->limit($limit)->select();
+        $news1 = M('news_cate')->where(array('news_cate' => 'jrnc'))->order('unix_timestamp(news_time) desc')->limit($limit)->select();
+        $news2 = M('news_cate')->where(array('news_cate' => 'ncsp'))->order('unix_timestamp(news_time) desc')->limit($limit)->select();
+        $news3 = M('news_cate')->where(array('news_cate' => 'szxw'))->order('unix_timestamp(news_time) desc')->limit($limit)->select();
+        $news4 = M('news_cate')->where(array('news_cate' => 'gnxw'))->order('unix_timestamp(news_time) desc')->limit($limit)->select();
         $news  = array_merge($news1, $news2, $news3, $news4);
         foreach($news as $k => $v){
             switch(trim($v['news_cate'])){
@@ -45,10 +45,10 @@ class CatenewsModel extends Model{
 
     //every  news  section
     public function getEveryNewsSection($limit){
-        $news['jrnc']['news_cate_data'] = M('news_cate')->where(array('news_cate' => 'jrnc'))->order('id desc')->limit($limit)->select();
-        $news['ncsp']['news_cate_data'] = M('news_cate')->where(array('news_cate' => 'ncsp'))->order('id desc')->limit($limit)->select();
-        $news['szxw']['news_cate_data'] = M('news_cate')->where(array('news_cate' => 'szxw'))->order('id desc')->limit($limit)->select();
-        $news['gnxw']['news_cate_data'] = M('news_cate')->where(array('news_cate' => 'gnxw'))->order('id desc')->limit($limit)->select();
+        $news['jrnc']['news_cate_data'] = M('news_cate')->where(array('news_cate' => 'jrnc'))->order('unix_timestamp(news_time) desc')->limit($limit)->select();
+        $news['ncsp']['news_cate_data'] = M('news_cate')->where(array('news_cate' => 'ncsp'))->order('unix_timestamp(news_time) desc')->limit($limit)->select();
+        $news['szxw']['news_cate_data'] = M('news_cate')->where(array('news_cate' => 'szxw'))->order('unix_timestamp(news_time) desc')->limit($limit)->select();
+        $news['gnxw']['news_cate_data'] = M('news_cate')->where(array('news_cate' => 'gnxw'))->order('unix_timestamp(news_time) desc')->limit($limit)->select();
         $news['jrnc']['news_cate']      = '今日南昌';
         $news['ncsp']['news_cate']      = '南昌时评';
         $news['szxw']['news_cate']      = '时政新闻';
@@ -61,26 +61,70 @@ class CatenewsModel extends Model{
         $host           = pathinfo($url);
         $img_url_       = $host['dirname'];
         $news_cate_info = M('news_cate')->where(array('id' => $id))->find();
-        $news_detail    = \phpspider\core\requests::get($url);
-        $main           = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//p");
-        $banner         = array();
-        if(is_array($main) && !empty($main)){
-            foreach($main as $k => $val){
+        $news_detail  = \phpspider\core\requests::get($url);
+        $main   = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//p");
+        $span        = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//span");
+        $img_long = selector::select($news_detail, "//center//img");
+        $banner = array();
+        $mains = array();
+        if(empty($main)){
+            if(!empty($span) && is_array($span)){
+                $mains = $span;
+            }elseif(!empty($span) && !is_array($span)){
+                $mains[] = $span;
+            }
+        }else{
+            if(!is_array($main)){
+                $mains[] = $main;
+            }else{
+                if(!empty($span) && is_array($span)){
+                    $main = array_merge($span,$main);
+                }elseif(!empty($span) && !is_array($span)){
+                    $main[] = $span;
+                }
+                $mains = $main;
+            }
+        }
+        $mainss = array();
+        if(is_array($mains) && !empty($mains)){
+            foreach($mains as $k => $val){
                 $img = selector::select($val, "//img");
-                if($img && !empty($img)){
+                if(($img && !empty($img))){
                     if(substr($img, 0, 1) == 'h'){
-                        $main[$k] = trim($img);
+                        $mains[$k] = trim($img);
                     }else{
-                        $main[$k] = $img_url_ . ltrim($img, '.');
+                        $mains[$k] = $img_url_ . ltrim($img, '.');
                     }
-                    $banner[] = $main[$k];
+                    $banner[] = $mains[$k];
                 }else{
-                    $main[$k] = strip_tags(trim($val));
+                    $mains[$k] = strip_tags(trim($val));
+                }
+            }
+            foreach($mains as $k => $val){
+                $mainss[] = $val;
+                if(!empty($img_long)){
+                    if(is_array($img_long)){
+                        if(preg_match('/(jpg|png)/i',$img_long[$k])){
+                            if(substr(trim($img_long[$k]), 0, 1) == 'h'){
+                                $mainss[] = trim($img_long[$k]);
+                            }else{
+                                $mainss[] = $img_url_ . ltrim($img_long[$k], '.');
+                            }
+                        }
+                    }else{
+                        if(substr(trim($img_long), 0, 1) == 'h'){
+                            $mainss[] = trim($img_long);
+                        }else{
+                            $mainss[] = $img_url_ . ltrim($img_long, '.');
+                        }
+                    }
+
                 }
             }
         }
+
         $arr = array(
-            'main'           => $main,
+            'main'           => $mainss,
             'news_cate_info' => $news_cate_info,
             'banner'         => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
         );
@@ -96,104 +140,280 @@ class CatenewsModel extends Model{
         $news_time      = $news_cate_info['news_time'];
         switch($new_cate){
             case 'jrnc':
-                $mains  = \phpspider\core\requests::get($url);
-                $main   = selector::select($mains, "//div[contains(@class,'TRS_Editor')]//p");
+                $news_detail  = \phpspider\core\requests::get($url);
+                $main   = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//p");
+                $span        = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//span");
+                $img_long = selector::select($news_detail, "//center//img");
                 $banner = array();
-                if(is_array($main) && !empty($main)){
-                    foreach($main as $k => $val){
+                $mains = array();
+                if(empty($main)){
+                    if(!empty($span) && is_array($span)){
+                        $mains = $span;
+                    }elseif(!empty($span) && !is_array($span)){
+                        $mains[] = $span;
+                    }
+                }else{
+                    if(!is_array($main)){
+                        $mains[] = $main;
+                    }else{
+                        if(!empty($span) && is_array($span)){
+                            $main = array_merge($span,$main);
+                        }elseif(!empty($span) && !is_array($span)){
+                            $main[] = $span;
+                        }
+                        $mains = $main;
+                    }
+                }
+                $mainss = array();
+                if(is_array($mains) && !empty($mains)){
+                    foreach($mains as $k => $val){
                         $img = selector::select($val, "//img");
-                        if($img && !empty($img)){
+                        if(($img && !empty($img))){
                             if(substr($img, 0, 1) == 'h'){
-                                $main[$k] = trim($img);
+                                $mains[$k] = trim($img);
                             }else{
-                                $main[$k] = $img_url_ . ltrim($img, '.');
+                                $mains[$k] = $img_url_ . ltrim($img, '.');
                             }
-                            $banner[] = $main[$k];
+                            $banner[] = $mains[$k];
                         }else{
-                            $main[$k] = strip_tags(trim($val));
+                            $mains[$k] = strip_tags(trim($val));
+                        }
+                    }
+                    foreach($mains as $k => $val){
+                        $mainss[] = $val;
+                        if(!empty($img_long)){
+                            if(is_array($img_long)){
+                                if(preg_match('/(jpg|png)/i',$img_long[$k])){
+                                    if(substr(trim($img_long[$k]), 0, 1) == 'h'){
+                                        $mainss[] = trim($img_long[$k]);
+                                    }else{
+                                        $mainss[] = $img_url_ . ltrim($img_long[$k], '.');
+                                    }
+                                }
+                            }else{
+                                if(substr(trim($img_long), 0, 1) == 'h'){
+                                    $mainss[] = trim($img_long);
+                                }else{
+                                    $mainss[] = $img_url_ . ltrim($img_long, '.');
+                                }
+                            }
+
                         }
                     }
                 }
+
                 $arr = array(
-                    'main'           => $main,
+                    'main'           => $mainss,
                     'news_cate_info' => $news_cate_info,
                     'banner'         => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
                 );
                 return $arr;
                 break;
             case 'ncsp':
-                $mains  = \phpspider\core\requests::get($url);
-                $main   = selector::select($mains, "//div[contains(@class,'TRS_Editor')]//p");
+                $news_detail  = \phpspider\core\requests::get($url);
+                $main   = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//p");
+                $span        = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//span");
+                $img_long = selector::select($news_detail, "//center//img");
                 $banner = array();
-                if(is_array($main) && !empty($main)){
-                    foreach($main as $k => $val){
+                $mains = array();
+                if(empty($main)){
+                    if(!empty($span) && is_array($span)){
+                        $mains = $span;
+                    }elseif(!empty($span) && !is_array($span)){
+                        $mains[] = $span;
+                    }
+                }else{
+                    if(!is_array($main)){
+                        $mains[] = $main;
+                    }else{
+                        if(!empty($span) && is_array($span)){
+                            $main = array_merge($span,$main);
+                        }elseif(!empty($span) && !is_array($span)){
+                            $main[] = $span;
+                        }
+                        $mains = $main;
+                    }
+                }
+                $mainss = array();
+                if(is_array($mains) && !empty($mains)){
+                    foreach($mains as $k => $val){
                         $img = selector::select($val, "//img");
-                        if($img && !empty($img)){
+                        if(($img && !empty($img))){
                             if(substr($img, 0, 1) == 'h'){
-                                $main[$k] = trim($img);
+                                $mains[$k] = trim($img);
                             }else{
-                                $main[$k] = $img_url_ . ltrim($img, '.');
+                                $mains[$k] = $img_url_ . ltrim($img, '.');
                             }
-                            $banner[] = $main[$k];
+                            $banner[] = $mains[$k];
                         }else{
-                            $main[$k] = strip_tags(trim($val));
+                            $mains[$k] = strip_tags(trim($val));
+                        }
+                    }
+                    foreach($mains as $k => $val){
+                        $mainss[] = $val;
+                        if(!empty($img_long)){
+                            if(is_array($img_long)){
+                                if(preg_match('/(jpg|png)/i',$img_long[$k])){
+                                    if(substr(trim($img_long[$k]), 0, 1) == 'h'){
+                                        $mainss[] = trim($img_long[$k]);
+                                    }else{
+                                        $mainss[] = $img_url_ . ltrim($img_long[$k], '.');
+                                    }
+                                }
+                            }else{
+                                if(substr(trim($img_long), 0, 1) == 'h'){
+                                    $mainss[] = trim($img_long);
+                                }else{
+                                    $mainss[] = $img_url_ . ltrim($img_long, '.');
+                                }
+                            }
+
                         }
                     }
                 }
+
                 $arr = array(
-                    'main'           => $main,
+                    'main'           => $mainss,
                     'news_cate_info' => $news_cate_info,
                     'banner'         => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
                 );
                 return $arr;
                 break;
             case 'szxw':
-                $mains  = \phpspider\core\requests::get($url);
-                $main   = selector::select($mains, "//div[contains(@class,'TRS_Editor')]//p");
+                $news_detail  = \phpspider\core\requests::get($url);
+                $main   = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//p");
+                $span        = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//span");
+                $img_long = selector::select($news_detail, "//center//img");
                 $banner = array();
-                if(is_array($main) && !empty($main)){
-                    foreach($main as $k => $val){
+                $mains = array();
+                if(empty($main)){
+                    if(!empty($span) && is_array($span)){
+                        $mains = $span;
+                    }elseif(!empty($span) && !is_array($span)){
+                        $mains[] = $span;
+                    }
+                }else{
+                    if(!is_array($main)){
+                        $mains[] = $main;
+                    }else{
+                        if(!empty($span) && is_array($span)){
+                            $main = array_merge($span,$main);
+                        }elseif(!empty($span) && !is_array($span)){
+                            $main[] = $span;
+                        }
+                        $mains = $main;
+                    }
+                }
+                $mainss = array();
+                if(is_array($mains) && !empty($mains)){
+                    foreach($mains as $k => $val){
                         $img = selector::select($val, "//img");
-                        if($img && !empty($img)){
+                        if(($img && !empty($img))){
                             if(substr($img, 0, 1) == 'h'){
-                                $main[$k] = trim($img);
+                                $mains[$k] = trim($img);
                             }else{
-                                $main[$k] = $img_url_ . ltrim($img, '.');
+                                $mains[$k] = $img_url_ . ltrim($img, '.');
                             }
-                            $banner[] = $main[$k];
+                            $banner[] = $mains[$k];
                         }else{
-                            $main[$k] = strip_tags(trim($val));
+                            $mains[$k] = strip_tags(trim($val));
+                        }
+                    }
+                    foreach($mains as $k => $val){
+                        $mainss[] = $val;
+                        if(!empty($img_long)){
+                            if(is_array($img_long)){
+                                if(preg_match('/(jpg|png)/i',$img_long[$k])){
+                                    if(substr(trim($img_long[$k]), 0, 1) == 'h'){
+                                        $mainss[] = trim($img_long[$k]);
+                                    }else{
+                                        $mainss[] = $img_url_ . ltrim($img_long[$k], '.');
+                                    }
+                                }
+                            }else{
+                                if(substr(trim($img_long), 0, 1) == 'h'){
+                                    $mainss[] = trim($img_long);
+                                }else{
+                                    $mainss[] = $img_url_ . ltrim($img_long, '.');
+                                }
+                            }
+
                         }
                     }
                 }
+
                 $arr = array(
-                    'main'           => $main,
+                    'main'           => $mainss,
                     'news_cate_info' => $news_cate_info,
                     'banner'         => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
                 );
                 return $arr;
                 break;
             case 'gnxw':
-                $mains  = \phpspider\core\requests::get($url);
-                $main   = selector::select($mains, "//div[contains(@class,'TRS_Editor')]//p");
+                $news_detail  = \phpspider\core\requests::get($url);
+                $main   = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//p");
+                $span        = selector::select($news_detail, "//div[contains(@class,'TRS_Editor')]//span");
+                $img_long = selector::select($news_detail, "//center//img");
                 $banner = array();
-                if(is_array($main) && !empty($main)){
-                    foreach($main as $k => $val){
+                $mains = array();
+                if(empty($main)){
+                    if(!empty($span) && is_array($span)){
+                        $mains = $span;
+                    }elseif(!empty($span) && !is_array($span)){
+                        $mains[] = $span;
+                    }
+                }else{
+                    if(!is_array($main)){
+                        $mains[] = $main;
+                    }else{
+                        if(!empty($span) && is_array($span)){
+                            $main = array_merge($span,$main);
+                        }elseif(!empty($span) && !is_array($span)){
+                            $main[] = $span;
+                        }
+                        $mains = $main;
+                    }
+                }
+                $mainss = array();
+                if(is_array($mains) && !empty($mains)){
+                    foreach($mains as $k => $val){
                         $img = selector::select($val, "//img");
-                        if($img && !empty($img)){
+                        if(($img && !empty($img))){
                             if(substr($img, 0, 1) == 'h'){
-                                $main[$k] = trim($img);
+                                $mains[$k] = trim($img);
                             }else{
-                                $main[$k] = $img_url_ . ltrim($img, '.');
+                                $mains[$k] = $img_url_ . ltrim($img, '.');
                             }
-                            $banner[] = $main[$k];
+                            $banner[] = $mains[$k];
                         }else{
-                            $main[$k] = strip_tags(trim($val));
+                            $mains[$k] = strip_tags(trim($val));
+                        }
+                    }
+                    foreach($mains as $k => $val){
+                        $mainss[] = $val;
+                        if(!empty($img_long)){
+                            if(is_array($img_long)){
+                                if(preg_match('/(jpg|png)/i',$img_long[$k])){
+                                    if(substr(trim($img_long[$k]), 0, 1) == 'h'){
+                                        $mainss[] = trim($img_long[$k]);
+                                    }else{
+                                        $mainss[] = $img_url_ . ltrim($img_long[$k], '.');
+                                    }
+                                }
+                            }else{
+                                if(substr(trim($img_long), 0, 1) == 'h'){
+                                    $mainss[] = trim($img_long);
+                                }else{
+                                    $mainss[] = $img_url_ . ltrim($img_long, '.');
+                                }
+                            }
+
                         }
                     }
                 }
+
                 $arr = array(
-                    'main'           => $main,
+                    'main'           => $mainss,
                     'news_cate_info' => $news_cate_info,
                     'banner'         => isset($banner[0]) && !empty($banner) ? $banner[0] : '',
                 );

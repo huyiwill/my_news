@@ -8,21 +8,21 @@
       <div class="col-sm-8 tab-content tab-content_mob-p0">
 
         <div role="tabpanel" class="tab-pane fade in active" id="home">
-          <img style="width: 680px;height: 450px;" src="<{$one_data.imgs}>" alt="main img" class="tab-pane__img">
+          <img style="width: 100%;height: 50%;" src="<{$one_data.imgs}>" alt="main img" class="tab-pane__img">
           <div class="header_news_text tab-pane__block">
             <p class="tab-pane__category yel_line"><{$one_data.twnc}></p>
 
-            <a href="<{:U('Index/Index/index_news_detail/',array('url'=>$one_data['title_href']))}>" class="tab-pane__title"><{$one_data.title}></a>
+            <a href="#" class="tab-pane__title"><{$one_data.title}></a>
             <p class="tab-pane__text"><{$one_data.desc}></p>
           </div>
         </div>
 
         <foreach name="data" item="data">
           <div role="tabpanel" class="tab-pane fade" id="<{$data.idss}>">
-            <img style="width: 680px;height: 450px;" src="<{$data.imgs}>" alt="main img" class="tab-pane__img">
+            <img style="width: 100%;height: 50%;" src="<{$data.imgs}>" alt="main img" class="tab-pane__img">
             <div class="header_news_text tab-pane__block">
               <p class="tab-pane__category yel_line"><{$data.twnc}></p>
-              <a href="<{:U('Index/Index/index_news_detail/',array('url'=>$data['title_href']))}>" class="tab-pane__title"><{$data.title}></a>
+              <a href="#" class="tab-pane__title"><{$data.title}></a>
               <p class="tab-pane__text"><{$data.desc}></p>
             </div>
           </div>
@@ -31,7 +31,7 @@
       <!-- END Tab panes -->
       <!-- Nav tabs -->
       <div class="col-sm-4 news-tabs">
-        <p class="news-tabs__title h2">图片新闻</p>
+        <p class="news-tabs__title h2">3秒新闻</p>
         <ul class="news-tabs__nav nav nav-tabs shadow_text" role="tablist">
 
           <li role="presentation" class="active">

@@ -43,11 +43,11 @@ $configs = array(
         'table' => 'easy_news_twnc',
     ),
     'db_config'           => array(
-        'host' => '127.0.0.1',
+        'host' => 'hdm144528485.my3w.com',
         'port' => 3306,
-        'user' => 'root',
-        'pass' => 'aa',
-        'name' => 'easycms',
+        'user' => 'hdm144528485',
+        'pass' => 'huyiwill',
+        'name' => 'hdm144528485_db',
     ),
     'fields'              => array(
         array(

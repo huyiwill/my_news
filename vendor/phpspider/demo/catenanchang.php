@@ -40,17 +40,17 @@ $configs = array(
         "http://www.ncnews.com.cn/xwzx/ncxw/szxw/index(_[0-9]{0,2})?.html",
         "http://www.ncnews.com.cn/xwzx/gnxw/index(_[0-9]{0,2})?.html",
     ),
-    'max_try'             => 3,
+    'max_try'             => 5,
     'export'              => array(
         'type'  => 'db',
         'table' => 'easy_news_cate',
     ),
     'db_config'           => array(
-        'host' => '127.0.0.1',
+        'host' => 'hdm144528485.my3w.com',
         'port' => 3306,
-        'user' => 'root',
-        'pass' => 'aa',
-        'name' => 'easycms',
+        'user' => 'hdm144528485',
+        'pass' => 'huyiwill',
+        'name' => 'hdm144528485_db',
     ),
     'fields'              => array(
         array(
@@ -107,10 +107,9 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                     if(!empty($news_content_url)){
                         if(substr($news_content_url, 0, 1) == 'h'){
                             if(!preg_match('/ncnews/i',$news_content_url)){
-                                unset($data[$k]);
-                            }else{
-                                $arr[$k]['news_content_url'] = $news_content_url;
+                                continue;
                             }
+                            $arr[$k]['news_content_url'] = $news_content_url;
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }
@@ -145,10 +144,9 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                     if(!empty($news_content_url)){
                         if(substr($news_content_url, 0, 1) == 'h'){
                             if(!preg_match('/ncnews/i',$news_content_url)){
-                                unset($data[$k]);
-                            }else{
-                                $arr[$k]['news_content_url'] = $news_content_url;
+                                continue;
                             }
+                            $arr[$k]['news_content_url'] = $news_content_url;
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }
@@ -184,10 +182,9 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                     if(!empty($news_content_url)){
                         if(substr($news_content_url, 0, 1) == 'h'){
                             if(!preg_match('/ncnews/i',$news_content_url)){
-                                unset($data[$k]);
-                            }else{
-                                $arr[$k]['news_content_url'] = $news_content_url;
+                                continue;
                             }
+                            $arr[$k]['news_content_url'] = $news_content_url;
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }
@@ -223,10 +220,9 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
                     if(!empty($news_content_url)){
                         if(substr($news_content_url, 0, 1) == 'h'){
                             if(!preg_match('/ncnews/i',$news_content_url)){
-                                unset($data[$k]);
-                            }else{
-                                $arr[$k]['news_content_url'] = $news_content_url;
+                                continue;
                             }
+                            $arr[$k]['news_content_url'] = $news_content_url;
                         }else{
                             $arr[$k]['news_content_url'] = $urls . ltrim($news_content_url, '.');
                         }
@@ -257,15 +253,28 @@ $spider->on_extract_field = function ($fieldname, $data, $page){
 //在一个网页的所有field抽取完成之后, 可能需要对field进一步处理, 以发布到自己的网站
 $spider->on_extract_page = function ($page, $data){
     $data = $data['news_list'];
-        if(is_array($data)){
-            foreach($data as  $val){
-                $sql = "Select Count(*) As `count` From `easy_news_cate` Where `news_filename`=" . $val['news_filename'];
-                $row = db::get_one($sql);
-                if(!$row['count']){
-                    db::insert("easy_news_cate", $val);
-                }
+    if(is_array($data)){
+
+
+        $sql1 = "Select Count(*) As `count` From `easy_news_cate`";
+        $count = db::get_one($sql1);
+        if($count['count'] > 1000){
+            $del_sql = "delete from easy_news_cate order by id asc limit 200";
+            db::query($del_sql);
+        }
+
+        foreach($data as  $val){
+            //$sql = "select * from easy_news_cate where news_filename =".$val['news_filename'];
+            $news_filename = trim($val['news_filename']);
+            $sql = "Select Count(*) As `count` From `easy_news_cate` Where `news_filename`='{$news_filename}'";
+            $row = db::get_one($sql);
+            if(!$row['count']){
+                db::insert("easy_news_cate", $val);
             }
         }
+
+
+    }
     return $data;
 };
 
