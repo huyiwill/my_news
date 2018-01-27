@@ -6,7 +6,10 @@
 class CommonAction extends Action
 {
 	Public function _initialize(){
-        if (ismobile()) {
+        if (!ismobile()) {
+            echo "<script>alert('请使用手机浏览器访问!')</script>";
+            echo "<p style='color: red;font-size: larger;'>请使用手机浏览器访问!</p>";
+            exit;
             //C('DEFAULT_THEME','mobile');
             C('DEFAULT_THEME','news');
         }
