@@ -15,7 +15,11 @@ class MapModel extends Model{
             'ip'  => $data['ip']
         );
         $r = M('map') -> where($where) -> select();
-        if(count($r) > 1){
+        if(count($r) == 1){
+            $data = array(
+                'time'        => date('Y-m-d H:i:s', time()),
+            );
+            M('map') -> where($where) -> save($data);
             return true;
         }
         $res = M('map')->add($data);
