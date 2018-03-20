@@ -1,4 +1,4 @@
-### 使用须知
+### 
 
 - **程序安装需要使用 "网址/index.php/?s=/install" 的安装路径,此时后台地址"网址/index.php?s=/admin"** 
 
@@ -6,10 +6,4 @@
 
 - **正式使用时建议修改index.php下的APP_DEBUG为FALSE** 
 
-- **在线效果：http://www.easycms.cc**
-
->陈捷编写
->
->联系邮箱 c@easycms.cc
->
->QQ 916402586（如有紧急问题请加我QQ，加我请注明信息）
+>QQ 2468818839
